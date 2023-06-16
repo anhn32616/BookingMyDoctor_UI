@@ -1,0 +1,19 @@
+@import '_setting.scss';
+
+.searchBannerResult {
+    background-color: #fff;
+    &__container {
+        border-radius: 1px solid #ccc;
+        margin-top: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding-left: 10px;
+    }
+    &__item {
+        header {
+            font-weight: 500;
+            background-color: $second-color-background;
+            padding: 4px;
+        }
+    }
+}

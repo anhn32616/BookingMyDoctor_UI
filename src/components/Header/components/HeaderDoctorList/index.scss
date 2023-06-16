@@ -1,0 +1,35 @@
+@import '_setting.scss';
+.headerLinkComponent{
+    font-weight: 500;
+    &__container {
+        padding: 0 $margin-desktop;
+    }
+    &__header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        color: #ffffff;
+        background-color: #0391EA;
+        margin-left: -$margin-desktop;
+        margin-right: -$margin-desktop;
+        padding: 0 $margin-desktop;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        &-btn {
+            outline: none;
+            border: none;
+            font-size: 38px;
+            span {
+                color: white;
+            }
+        }
+
+    }
+    &__search {
+        margin-top: 100px;
+    }
+    &__list {
+        margin-top: 40px;
+    }
+}

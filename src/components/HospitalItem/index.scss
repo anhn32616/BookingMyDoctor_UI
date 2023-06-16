@@ -1,0 +1,38 @@
+@import '_setting.scss';
+.clinicItem {
+    cursor: pointer;
+    &:hover {
+        background-color: $second-color-background;
+    }
+    &__content {
+        font-size: 17px;
+        display: flex;
+        flex-direction: column;
+        &--list {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-bottom: 20px;
+            div {
+                img {
+                    width: 200px;
+                }
+            }
+        }
+        &-img {
+            &-list{
+                img {
+                    height: 100px !important;
+                }
+            }
+            img {
+                height: 180px;
+                flex-shrink: 0;
+            }
+        }
+        span {
+            display: block;
+            margin-top: 10px;
+        }
+    }
+}

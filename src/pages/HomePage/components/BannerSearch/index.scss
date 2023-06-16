@@ -1,0 +1,64 @@
+@import '_setting.scss';
+.bannerSearch {
+    height: 460px;
+    background-color: #01B3F5;
+    position: relative;
+    margin-bottom: 40px;
+    &__container {
+        margin: 0 120px;
+        width: 100%;
+    }
+    &__img {
+        position: absolute;
+        height: 100%;
+        right: 120px;
+        img {
+            object-fit: cover;
+            height: 100%;
+        }
+    }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 30%;
+        width: 42%;
+        z-index: 2;
+    }
+    &__title {
+        h1 {
+            color: #ffffff;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        span {
+            color: #ffffff;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    }
+}
+@media only screen and (min-width: 768px) and (max-width:1024px) {
+    .bannerSearch {
+        &__container {
+            margin: 0 $margin-tablet;
+        }
+    }
+}
+@media only screen and (max-width: 768px) { 
+    .bannerSearch {
+        height: 200px;
+        &__container {
+            margin: 0 $margin-mobile;
+        }
+        &__img {
+            display: none; 
+        }
+        &__content{
+            width: 90%;
+        }
+        &__title {
+            display: none;
+        }
+    }
+}

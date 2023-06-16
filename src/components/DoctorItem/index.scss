@@ -1,0 +1,80 @@
+@import '_setting.scss';
+.doctorItem{
+    background-color: #fafafa;
+    overflow: hidden;
+    &:hover {
+        background-color: $second-color-background;
+    }
+    .listColumn-item {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-bottom: 20px;
+    }
+    &__container {
+        border: 2px solid #F1F5F9;
+        border-radius: 4px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+    }
+    &__content {
+        width: 80%;
+        margin-bottom: 4px;
+        display: flex;
+        gap: 20px;
+        height: 136px;
+        flex-shrink: 0;
+        &-img {
+            width: 100px;
+            img {
+                border-radius: 50%;
+            }
+        }
+        &-main {
+            span {
+                display: block;
+            }
+            &-position {
+                font-size: 14px;
+                font-weight: 500;
+            }
+            &-name {
+                font-size: 18px;
+                font-weight: 600;
+                color: $primary-color;
+                margin-bottom: 6px;
+                &:hover {
+                    color: $hover-color;
+                }
+            }
+        }
+    }
+    &__action {
+        margin-top: auto;
+        &--column {
+            margin-top: auto;
+        }
+        &-link {
+            color: $primary-color;
+            &:hover {
+                color: $hover-color;
+            }
+        }
+        button {
+            border: none;
+            font-weight: 600;
+            background-color: #F3F8FE;
+            padding: 12px 20px;
+
+
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    .doctorItem__content {
+        height: 180px;
+    }
+}

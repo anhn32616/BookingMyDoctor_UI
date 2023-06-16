@@ -1,0 +1,14 @@
+@import '_setting.scss';
+.UpdateDoctor {
+    &__container {
+        padding: 0 10%;
+
+    }
+    &__title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 500;
+        color: $primary-color;
+        margin-bottom: 40px;
+    }
+}

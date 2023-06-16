@@ -1,0 +1,82 @@
+@import '_setting.scss';
+.bookTimeTable {
+    
+    &__container {
+        min-height: 160px;
+        margin: 0 $margin-desktop;
+        margin-bottom: 40px;
+        display: flex;
+    }
+    &__bookDay {
+        flex: 3;
+        header {
+            font-size: 20px;
+            font-weight: 500;
+            span {
+                color: $hover-color;
+                margin-right: 10px;
+            }
+        }
+        &-time {
+            margin: 10px 0px;
+        }
+        &-list{
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    }
+    &__outside {
+        flex: 1;
+        border-left: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4px;
+        .address_doctor {
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+            display: block;
+            padding: 4px;
+            header {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+        }
+        .price {
+            flex: 1;
+            padding: 4px;
+            span {
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .bookTimeTable {
+    
+        &__container {
+            margin: 0 $margin-tablet;
+            margin-bottom: 40px;
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .bookTimeTable {
+    
+        &__container {
+            margin: 0 $margin-mobile;
+            margin-bottom: 40px;
+            flex-direction: column;
+            gap: 20px;
+        }
+        &__bookDay {
+            ul {
+                gap: 13px;
+            }
+        }
+}
+}

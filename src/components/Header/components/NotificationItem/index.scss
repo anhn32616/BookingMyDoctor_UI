@@ -1,0 +1,38 @@
+.notification__list-item {
+    padding: 4px 6px;
+    cursor: pointer;
+    display: flex;
+    min-height: 60px;
+    border-radius: 4px;
+
+    &-content {
+        flex: 1;
+    }
+    &:hover {
+        background-color: #F0F2F5;
+    }
+    &-unRead {
+        background-color: white !important;
+        font-size: 20px;
+        font-weight: 700;
+        color: blue;
+        // display: none !important;
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+    &-Read {
+        background-color: white !important;
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+    div:last-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

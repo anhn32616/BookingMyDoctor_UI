@@ -1,0 +1,39 @@
+@import '_setting.scss';
+.content-layout {
+    background-color: #F9FAFB;
+    &-content {
+        padding: 40px 120px;
+        padding-bottom: 100px;
+        display: flex;
+        &-banner {
+            flex: 1;
+            img {
+                height: 80vh;
+            }
+        }
+        &-form {
+            flex: 1;
+        }
+    }
+
+}
+.footer {
+    background-color: #eaeaea;
+}
+
+@media screen and (max-width: 768px) {
+    .content-layout {
+        &-content {
+            padding: 40px $margin-mobile;
+        }
+    }
+}
+@media screen and (max-width: 1024px) {
+    .content-layout{
+        &-content {
+            &-banner {
+                display: none;
+            }
+        }
+    }
+}

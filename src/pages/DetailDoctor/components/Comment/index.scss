@@ -1,0 +1,16 @@
+@import '_setting.scss';
+@media only screen and (max-width: 1024px) {
+    .comment__container {
+        margin: 0 $margin-tablet;
+
+    }
+}
+@media only screen and (max-width: 768px) {
+    .comment__container {
+        margin: 0 $margin-mobile;
+    }
+}
+.comment__container {
+    margin: 40px 0;
+    margin: 0 $margin-desktop;
+}

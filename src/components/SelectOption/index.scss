@@ -1,0 +1,11 @@
+@import '_setting.scss';
+.selectOption {
+    &__container {
+        select {
+            border: none;
+            border-bottom: 2px solid $hover-color;
+            font-size: 18px;
+            outline: none;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+@import '_setting.scss';
+.authform {
+    background-color: #ffffff;
+    margin-top: 50px;
+    border-radius: 4px;
+    &__content {
+        padding: 40px;
+        &-title {
+            display: block;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+            color: #056EDF;
+        }
+    }
+    .authform__form-element {
+        margin-bottom: 10px;
+        &-two-input {
+            display: flex;
+            gap: 20px;
+
+            div {
+                flex: 1;
+            }
+        }
+    }
+    .button-submit {
+        margin-top: 40px;
+        text-align: center;
+        button {
+            width: 60%;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            background-color: #056EDF;
+            &:hover {
+                color: $hover-color;
+            }
+        }
+    }
+}

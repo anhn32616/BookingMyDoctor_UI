@@ -1,0 +1,30 @@
+@import '_setting.scss';
+.previewUploadImg {
+    &__container {
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        min-height: 120px;
+        max-height: 120px;
+        .previewUploadImg__img {
+            height: 120px;
+            width: 100px;
+        }
+    }
+}
+.inputFile {
+    display: none;
+}
+.chooseImg__label {
+    cursor: pointer;
+    border: 1px solid $primary-color;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 4px 20px;
+    font-weight: 500;
+    color: $primary-color;
+    &:hover {
+        color: $hover-color;
+    }
+}

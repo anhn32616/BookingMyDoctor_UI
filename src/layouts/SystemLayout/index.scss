@@ -1,0 +1,26 @@
+@import '_setting.scss';
+.systemLayout {
+    &__container {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+
+    }
+    &__logo {
+        padding: 5px 10px;
+    }
+    &__left {
+        flex: 1;
+        background-color: #00112A;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    &__content {
+        flex: 5;
+        background-color: #F0F2F5;
+        padding: 20px;
+        height: 100vh;
+        overflow-y: auto;
+    }
+}

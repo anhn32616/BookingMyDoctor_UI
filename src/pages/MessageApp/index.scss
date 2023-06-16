@@ -1,0 +1,147 @@
+.messageApp {
+    overflow: hidden;
+    &__container {
+        display: flex;
+        max-width: 1000px;
+        margin: auto;
+        // margin-top: 5vh;
+        height: 100vh;
+        background-color: #FBFBFB;
+        border: 2px solid #F3F3F3;
+    }
+    &__infoPeople {
+        flex: 1;
+        height: 100vh;
+        border-right: 2px solid #F3F3F3;
+        &-list {
+            padding: 0 6px;
+        }
+    }
+    &__messageArea {
+        flex: 2;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        header {
+            padding: 6px 4px;
+            padding-bottom: 10px;
+            font-size: 20px;
+            font-weight: 500;
+            background-color: #F8F8F8;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #F3F3F3;
+            height: 60px;
+        }
+        &-content {
+            height: calc(100% - 120px);
+            overflow-y: auto;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid #F3F3F3;
+            li {
+                display: inline-block;
+                max-width: 300px;
+                width: auto;
+                margin-top: 10px;
+                height: auto;
+                .text-send {
+
+                    background-color: #056EDF;
+                    color: white;
+                }
+                span {
+                    display: inline-block;
+                    &:first-child {
+                        word-wrap: break-word;
+
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 10px;
+
+
+                    }
+                    &:last-child {
+                        margin-top: 4px;
+                        display: block;
+                    }
+                }
+                img {
+                    cursor: pointer;
+                }
+            }
+            .li-send {
+                margin-left: auto;
+                text-align: right;
+
+            }
+            .li-receive {
+                margin-right: auto;
+                text-align: left;
+            }
+        }
+        &-img {
+            padding-left: 50px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            img {
+                width: 100px;
+                height: 60%;
+                border-radius: 4px;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+            }
+            div {
+                position: relative;
+                span {
+                    cursor: pointer;
+                    top: -5px;
+                    right: -5px;
+                    display: block;
+                    position: absolute;
+                    background-color: white;
+                    color: #000;
+                    font-weight: 400;
+                    border-radius: 50%;
+                    width: 18px;
+                    height: 18px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid #ccc;
+                    &:hover {
+                        background-color: #F3F3F3;
+                    }
+                }
+            }
+        }
+        &-input {
+            height: 60px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            padding: 0 20px;
+            background-color: #FFFFFF;
+            &-img {
+                cursor: pointer;
+            }
+            input {
+                
+                width: 90%;
+                outline: none;
+                // border: 1px solid #ccc;
+                border: none;
+                padding: 8px 0;
+                font-size: 18px;
+                -webkit-transition: 0.5s;
+                transition: 0.5s;
+                float: right;
+            }
+            button {
+                width: 100px;
+            }
+        }
+    }
+}

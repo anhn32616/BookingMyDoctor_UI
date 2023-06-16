@@ -1,0 +1,88 @@
+@import '_setting.scss';
+.bookAppointment {
+    background-color: white;
+    &__container {
+        margin-bottom: 40px;
+    }
+    &__Info {
+        margin-bottom: 40px;
+        padding: 0 30%;
+        background-color: #F6F6F6;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        &-img {
+            top: 0;
+            width: 160px;
+            height: 160px;
+            img {
+                border-radius: 50%;
+            }
+        }
+        &-content {
+            span {
+                display: block;
+                margin-bottom: 2px;
+                &:first-child {
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+                &:nth-child(2) {
+                    color: $primary-color;
+                }
+            }
+
+        }
+    }
+    .form__price {
+        margin: 30px 0;
+        background-color: #F6F6F6;
+        padding: 10px 40px;
+        border-radius: 4px;
+        div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            span {
+                &:nth-child(1) {
+                    font-weight: 500;
+                    color:$primary-color;
+                }
+            }
+            &:nth-child(2) {
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 10px;
+            }
+        }
+    }
+    .description {
+        margin-bottom: 10px !important;
+        display: block;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .form__btn {
+        display: flex;
+        justify-content: center;
+    }
+    .btnBook {
+        width: 60%;
+    }
+}
+
+
+@media screen and (max-width: 768px){
+    .bookAppointment {
+        &__Info {
+            flex-direction: column;
+            padding: 0 10%;
+            &-img {
+                width: 100px;
+                height: 120px;
+            
+            }
+        }
+    }
+}

@@ -1,0 +1,72 @@
+@import '_setting.scss';
+.detailSpecialist {
+    background-color: $second-color-background;
+
+    &__container {
+        margin: 100px $margin-desktop;
+        padding: 20px 0;
+        header {
+            font-size: 22px;
+            font-weight: 500;
+            color: $primary-color;
+            margin-bottom: 40px;
+            padding-left: 20px;
+        }
+    }
+    &__content {
+        display: flex;
+        padding-bottom: 40px;
+        gap: 20px;
+        &-specialist {
+            flex: 1;
+            height: 360px;
+            background-color: #ffffff;
+            padding: 20px 8px;
+            header {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            &-search {
+                width: 80%;
+                margin: 0 auto;
+            }
+            &-list {
+                margin-top: 10px;
+                height: 200px;
+                overflow-y: auto;
+            }
+        }
+        &-doctorsList {
+            flex: 3;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 20px 8px;
+        }
+    }
+
+}
+
+@media screen and (max-width: 768px){
+    .detailSpecialist {    
+        &__container {
+            margin: 100px $margin-mobile;
+        }
+        &__content {
+            flex-direction: column;
+        }
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    .detailSpecialist {    
+        &__container {
+            margin: 100px $margin-tablet;
+        }
+    &__content {
+        &-specialist {
+            &-search {
+                width: 100%;
+            }
+        }
+    } 
+}
+}

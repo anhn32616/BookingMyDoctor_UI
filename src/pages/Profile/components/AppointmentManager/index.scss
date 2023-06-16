@@ -1,0 +1,48 @@
+@import '_setting.scss';
+.appointmentManager {
+    &__container {
+        margin: 0 $margin-desktop;
+        margin-top: 40px;
+        height: 100vh;
+        header {
+            font-size: 22px;
+            font-weight: 500;
+            color: $primary-color;
+            margin-bottom: 20px;
+        }
+        table {
+            background-color: white;
+            border-collapse: collapse; 
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            min-height: 80vh;
+        }
+        tbody {
+            overflow-y: scroll;
+        }
+
+        th {
+            padding: 16px 4px;
+            padding-left: 10px;
+            background-color: #FAFAFA;
+            text-align: left;
+            font-weight: 500;
+            border-bottom: 2px solid #FCFCFC;
+            border-right: 2px solid #F2F2F2;
+        }
+        tr {
+            border-bottom: 2px solid #F5F5F5;
+        }
+        td {
+            padding: 10px 0;
+            padding-left: 10px;
+            &:last-child {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    
+    }
+}

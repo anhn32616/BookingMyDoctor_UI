@@ -1,0 +1,32 @@
+@import '_setting.scss';
+.doctorReviewItem {
+    border-bottom: 1px solid #ccc;
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 0;
+    }
+    &__infoUser {
+        span {
+            display: inline-block;
+            margin-right: 4px;
+            &:first-child {
+                font-size: 18px;
+                font-weight: 500;
+            }
+        }
+        .tick {
+            background-color: $hover-color;
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 16px;
+        }
+    }
+    &__rate-point {
+        color: $hover-color;
+    }
+    &__message {
+        font-style: italic;
+    }
+}

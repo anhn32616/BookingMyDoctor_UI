@@ -1,0 +1,207 @@
+@import '_setting.scss';
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+ul {
+  list-style-type: none;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: #000000;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+img {
+  object-fit: cover;
+  width: 100%;
+  // height: 100%;
+}
+button {
+  cursor: pointer;
+  padding: 4px 20px;
+  background-color: transparent;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.btnSuccess {
+  padding: 6px 20px;
+  background-color: #28a745;
+  border: 1px solid #28a745;
+  color: #ffffff;
+}
+.btnSuccess:hover {
+  background-color: #218838;
+}
+.btnCancel {
+  padding: 6px 20px;
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+  color: #ffffff;
+}
+.btnCancel:hover {
+  background-color: #C82333;
+}
+.btnDetail {
+  background-color: #2EA7C6;
+  border: none;
+  color: #ffffff;
+  font-weight: 500;
+}
+.btnReview {
+  padding: 6px 20px;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  color: #ffffff;
+}
+.btnReview:hover {
+  background-color: $hover-color;
+}
+.slick-slide {
+  // margin: 0 6px;
+  padding: 0 6px;
+}
+.slick-prev {
+  left: -5px !important;
+  z-index: 10;
+}
+.slick-next {
+  right: -5px !important;
+  z-index: 10;
+}
+.slick-prev:before, .slick-next:before {
+  color: $primary-color !important;
+}
+.form {
+  margin: 0 25%;
+  &__element {
+      margin-bottom: 10px;
+      &-two-input {
+          display: flex;
+          gap: 20px;
+
+          div {
+              flex: 1;
+          }
+      }
+  }
+}
+
+.edit__icon {
+  color: $primary-color;
+  cursor: pointer;
+  &:hover {
+    color: $hover-color;
+  }
+}
+
+//system
+
+.entityManagement {
+  &__container {
+      height: 100vh;
+      header {
+          text-align: center;
+          font-weight: 500;
+          font-size: 24px;
+          margin-bottom: 40px;
+      }
+
+      table {
+          background-color: #ffffff;
+          width: 100%;
+          border-collapse: collapse; 
+      }
+      th {
+          padding: 6px 0;
+          background-color: #ccc;
+          text-align: left;
+      }
+      td {
+          border-bottom: 1px solid #ccc;
+          padding: 6px 0;
+      }
+
+  }
+  &__action {
+      margin-bottom: 40px;
+  }
+}
+
+//label
+.label {
+  &__confirm {
+    padding: 4px 4px;
+    display: inline-block;
+    background-color: green;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100px;
+    text-align: center;
+  }
+  &__cancel {
+    padding: 4px 4px;
+    display: inline-block;
+    background-color: red;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100px;
+    text-align: center;
+  }
+  &__pending {
+    padding: 4px 4px;
+    display: inline-block;
+    background-color: #2EA7C6;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100px;
+    text-align: center;
+  }
+  &__done {
+    padding: 4px 4px;
+    display: inline-block;
+    background-color: #0f363f;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100px;
+    text-align: center;
+  }
+}
+.react-datepicker-wrapper {
+  .react-datepicker__input-container {
+    input {
+      padding: 8px 4px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 4px;
+      outline: none;
+      border: 1px solid #ccc;
+      // box-shadow: #ccc 0px 5px 15px;
+      &:focus {
+        border: 1px solid $primary-color;
+      }
+    }
+  }
+}
+.payment-btn {
+  border-radius: 10px;
+}

@@ -1,0 +1,31 @@
+@import '_setting.scss';
+.topDoctors {
+    &__container {
+        margin: 0 120px;
+        margin-bottom: 60px;
+        header {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .topDoctors {
+        &__container {
+            margin: 0 $margin-mobile;
+            margin-bottom: 40px;
+
+        }
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .topDoctors {
+        &__container {
+            margin: 0 $margin-tablet;
+            margin-bottom: 40px;
+
+        }
+    }
+}
+

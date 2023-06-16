@@ -1,0 +1,17 @@
+.inputShow {
+    display: flex;
+    flex-direction: column;
+    &__title {
+        display: block;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 4px;
+    }
+    &__content {
+        padding: 8px 4px;
+        font-size: 16px;
+        outline: none;
+        border: 2px solid #a39c9c;
+        border-radius: 4px;
+    }
+}

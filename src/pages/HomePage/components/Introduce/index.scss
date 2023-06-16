@@ -1,0 +1,90 @@
+@import '_setting.scss';
+.mainlayout-introduce {
+    &__container {
+        margin: 0 120px;
+        margin-bottom: 40px;
+    }
+    &__header {
+        text-align: center;
+        font-size: 16px;
+        span {
+            display: block;
+            font-weight: 600;
+            font-size: 24px;
+        }
+        margin-bottom: 20px;
+    }
+    &__content {
+        display: flex;
+
+        &-img {
+            flex: 1;
+            height: 400px;
+            img {
+                padding: 20px 44px;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &-detail {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            &-item {
+                cursor: pointer;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border-left: 1px solid #ccc;
+                padding: 0 20px;
+                span {
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+                p {
+                    margin-top: 10px;
+                }
+                &:first-child {
+                    border-bottom: 1px solid #ccc;
+                }
+                &:hover > span{
+                    color: #056EDF;
+                }
+                &:hover {
+                    border-left: 4px solid #056EDF;
+                }
+            }
+
+        }
+    }
+}
+.active-banner {
+    border-left: 4px solid #056EDF;
+}
+.text-active {
+    color: #056EDF;
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .mainlayout-introduce {
+        &__container {
+            margin: 0 $margin-tablet;
+            margin-bottom: 40px;
+
+        }
+    }
+}
+@media screen and (max-width: 768px){
+    .mainlayout-introduce {
+        &__container {
+            margin: 0 $margin-mobile;
+            margin-bottom: 40px;
+        }
+        &__content {
+            flex-direction: column;
+            &-detail-item {
+                padding: 20px;
+            }
+        }
+    }
+}

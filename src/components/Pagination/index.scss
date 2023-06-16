@@ -1,0 +1,21 @@
+.pagination {
+    &__list{
+        display: flex;
+        &-item {
+            border-radius: 2px;
+            margin: 0 2px;
+            border: 2px solid #ccc;
+            padding: 4px 10px;
+            cursor: pointer;
+            color: #40A9FF ;
+            background-color: #fff;
+            font-weight: 500;
+            &--active {
+                border: 2px solid #61dafb;
+            }
+            &:hover {
+                background-color: #ccc;
+            }
+        }
+    }
+}

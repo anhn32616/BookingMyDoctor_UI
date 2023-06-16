@@ -1,0 +1,30 @@
+@import '_setting.scss';
+.topHospitals {
+    &__container {
+        margin: 0 120px;
+        margin-bottom: 60px;
+        header {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    }
+}
+@media only screen and (max-width: 768px) {
+    .topHospitals {
+        &__container {
+            margin: 0 $margin-mobile;
+            margin-bottom: 40px;
+
+        }
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .topHospitals {
+        &__container {
+            margin: 0 $margin-tablet;
+            margin-bottom: 40px;
+
+        }
+    }
+}
