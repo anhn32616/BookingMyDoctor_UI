@@ -79,7 +79,7 @@ function SchedulesTable() {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(1);
   const [item, setItem] = useState();
   const [isShowForm, setIsShowForm] = useState(false);
@@ -355,7 +355,7 @@ function SchedulesTable() {
                     pageSize: pageSize,
                     total: totalItem,
                     showSizeChanger: true,
-                    pageSizeOptions: ['10', '15', '30'],
+                    pageSizeOptions: ['5', '10', '15'],
                     onChange: (page, pageSize) => {
                       setPage(page);
                       setPageSize(pageSize);

@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form'
 import InputField from 'components/InputFiled'
 import RadioGroup from 'components/RadioGroup'
 import * as yup from 'yup'
-// eslint-disable-next-line no-useless-escape
-const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
 import { yupResolver } from '@hookform/resolvers/yup'
 import './index.scss'
 import PreviewUploadImg from 'components/PreviewUploadImg'
@@ -16,6 +14,7 @@ import { toast } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { path } from 'constants/path'
 import doctorApi from 'api/doctorApi'
+const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
 
 function UpdateDoctor() {
     const navigate = useNavigate()
@@ -93,8 +92,8 @@ function UpdateDoctor() {
     }
     useEffect(() => {
         (async () => {
-            const dataHospitalAPI = await hospitalApi.getAllHospital({ limit: 100 })
-            const dataClinicAPI = await clinicApi.getAllClinic({ limit: 100 })
+            const dataHospitalAPI = await hospitalApi.getAllHospital()
+            const dataClinicAPI = await clinicApi.getAllClinic()
             const dataSpecialist= await specialistApi.getAllSpecialist()
 
             setDataHospital(dataHospitalAPI.hospital)
@@ -132,7 +131,7 @@ function UpdateDoctor() {
                     </div>
                     <div className="authform__form-element">
                         <span>Ảnh</span>
-                        <PreviewUploadImg form={form} name="image" />
+                        <PreviewUploadImg form={form} name="image"/>
                     </div>
                     <div className="authform__form-element">
                         <InputField

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
     Input,
     Form,
-    Select,
     Modal,
     DatePicker,
     InputNumber,
@@ -16,9 +15,6 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-
-
-const { Option } = Select;
 
 
 
@@ -68,7 +64,7 @@ function FormDataSchedule(props) {
         scheduleApi.addSchedule(formData, {
             'Content-Type': 'applicaton/json',
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`
             }
         }).then((response) => {
             toast.success(response.message, {
@@ -137,7 +133,6 @@ function FormDataSchedule(props) {
         <Form.Item labelCol={12} wrapperCol={12} name='startTime' label='Start Time' rules={[{ required: true, message: 'Start time is required' }]}>
             <TimePicker
                 format={'HH:mm'}
-                // disabledDate={(current) => current.isBefore(dayjs(new Date().setDate(new Date().getDate() - 1)))}
                 style={{
                     height: 'auto',
                     borderRadius: '6px',

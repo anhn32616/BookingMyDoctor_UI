@@ -17,7 +17,8 @@ import { toast } from 'react-toastify'
 import appointmentApi from 'api/appointmentApi'
 import userApi from 'api/userApi'
 import ModalAppointmentDetail from 'components/appointment/ModalAppointmentDetail'
-import { useSelector } from 'react-redux'
+import strftime from 'strftime'
+import { addNotification } from 'utils/firebase/NotificationFb'
 const { Option } = Select
 
 //styles
@@ -190,7 +191,7 @@ function AppointmentsTableDoctor() {
                   (
                     <>
                       <Popconfirm title="Are you sure to accept this appointment?"
-                        onConfirm={() => onAccept(item?.id)}>
+                        onConfirm={() => onAccept(item)}>
                         <Button style={{ marginRight: 10 }} type='primary'>
                           Accept
                         </Button>
@@ -202,7 +203,7 @@ function AppointmentsTableDoctor() {
                   (
                     <>
                       <Popconfirm title="Are you sure to cancel this appointment?"
-                        onConfirm={() => onCancel(item?.id)}>
+                        onConfirm={() => onCancel(item)}>
                         <Button type='primary' danger>
                           Cancel
                         </Button>
@@ -214,7 +215,7 @@ function AppointmentsTableDoctor() {
                   (
                     <>
                       <Popconfirm title="Are you sure to report this appointment?"
-                        onConfirm={() => onReport(item?.id)}>
+                        onConfirm={() => onReport(item)}>
                         <Button type='primary'>
                           Report
                         </Button>
@@ -234,11 +235,11 @@ function AppointmentsTableDoctor() {
       console.log(error)
     }
   }
-  
+
   const optionHiddenCancel = () => (
-    <div className="filter-item" style={{marginRight: 20}}>
-      <div className="filter-item-label" style={{marginBottom: 17}}>HIDDEN CANCEL</div>
-      <Switch style={{position: 'relative', top: '-7px', width: 30}} checked={hiddenCancel} onChange={() => { setHiddenCancel(!hiddenCancel) }} />
+    <div className="filter-item" style={{ marginRight: 20 }}>
+      <div className="filter-item-label" style={{ marginBottom: 17 }}>HIDDEN CANCEL</div>
+      <Switch style={{ position: 'relative', top: '-7px', width: 30 }} checked={hiddenCancel} onChange={() => { setHiddenCancel(!hiddenCancel) }} />
     </div>
   )
 
@@ -323,12 +324,16 @@ function AppointmentsTableDoctor() {
     </div>
   )
 
-  const onReport = async (id) => {
+  const onReport = async (appointment) => {
     try {
-      var res = await appointmentApi.doctorReportAppointment(id);
+      var res = await appointmentApi.doctorReportAppointment(appointment.id);
       toast.success(res.message, {
         position: toast.POSITION.BOTTOM_RIGHT
       })
+      const message1 = `Bác sĩ ${appointment.schedule.doctorName} đã báo cáo bệnh nhân ${appointment.patient.fullName} không đến khám ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+      const message2 = `Bác sĩ ${appointment.schedule.doctorName} đã báo cáo bạn không đến khám ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+      addNotification('admin', message1)
+      addNotification(appointment.patientId, message2)
       getRecords()
     } catch (error) {
       toast.error(error.message, {
@@ -337,12 +342,15 @@ function AppointmentsTableDoctor() {
     }
   }
 
-  const onAccept = async (id) => {
+  const onAccept = async (appointment) => {
     try {
-      var res = await appointmentApi.doctorAcceptAppointment(id);
+      var res = await appointmentApi.doctorAcceptAppointment(appointment.id);
       toast.success(res.message, {
         position: toast.POSITION.BOTTOM_RIGHT
       })
+      const message = `Bác sĩ ${appointment.schedule.doctorName} đã xác nhận lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+      addNotification(appointment.patientId, message)
+      res.data && res.data.forEach((notification) => addNotification(notification.userId, notification.message))
       getRecords()
     } catch (error) {
       toast.error(error.message, {
@@ -351,12 +359,15 @@ function AppointmentsTableDoctor() {
     }
   }
 
-  const onCancel = async (id) => {
+  const onCancel = async (appointment) => {
     try {
-      var res = await appointmentApi.cancelAppontment(id);
+      var res = await appointmentApi.cancelAppontment(appointment.id);
       toast.success(res.message, {
         position: toast.POSITION.BOTTOM_RIGHT
       })
+      const action = appointment.status === 'PENDING' ? 'từ chối' : 'hủy'
+      const message = `Bác sĩ ${appointment.schedule.doctorName} đã ${action} lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+      addNotification(appointment.patientId, message)
       getRecords()
     } catch (error) {
       toast.error(error.message, {
@@ -394,7 +405,7 @@ function AppointmentsTableDoctor() {
                     pageSize: pageSize,
                     total: totalItem,
                     showSizeChanger: true,
-                    pageSizeOptions: ['10', '15', '30'],
+                    pageSizeOptions: ['5', '10', '15'],
                     onChange: (page, pageSize) => {
                       setPage(page)
                       setPageSize(pageSize)

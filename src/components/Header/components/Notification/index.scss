@@ -20,7 +20,7 @@
     }
     &__list {
         max-height: 360px;
-        overflow-y: scroll;
+        overflow-y: auto;
         margin: 0 4px
     }
 }

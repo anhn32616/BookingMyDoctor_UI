@@ -9,41 +9,39 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import userApi from 'api/userApi'
 import { logout } from 'pages/Auth/userSlice'
+
 function EditPassword({ onClose }) {
     const dispatch = useDispatch()
     const { id } = useSelector(state => state.user.profile)
     const schema = yup.object().shape({
-        password: yup
+        currentPass: yup
             .string()
             .required('Nhập mật khẩu cũ')
             .min(5, 'Mật khẩu 5 - 15 kí tự')
             .max(15, 'Mật khẩu 5 - 15 kí tự'),
-        newPassword: yup
+        newPass: yup
             .string()
             .required('Nhập mật khẩu mới')
             .min(5, 'Mật khẩu 5 - 15 kí tự')
             .max(15, 'Mật khẩu 5 - 15 kí tự'),
-        retypeNewPassword: yup
+        reNewPass: yup
             .string()
             .required('Vui lòng nhập lại mật khẩu')
-            .oneOf([yup.ref('newPassword')], 'Mật khẩu không khớp')
+            .oneOf([yup.ref('newPass')], 'Mật khẩu không khớp')
     })
     const form = useForm({
         defaultValues: {
-            password: '',
-            newPassword: '',
-            retypeNewPassword: ''
         },
         resolver: yupResolver(schema)
     })
     const handleSubmitForm = value => {
-        const valueSubmit = { id: id, ...value }
-        delete valueSubmit.retypeNewPassword
+        const valueSubmit = { ...value }
+        delete valueSubmit.reNewPass
         ;(async () => {
             try {
                 await userApi.changePassword(valueSubmit, {
                     headers: {
-                        Authorization: `${localStorage.getItem(
+                        Authorization: "Bearer " + `${localStorage.getItem(
                             'access_token'
                         )}`
                     }
@@ -66,7 +64,7 @@ function EditPassword({ onClose }) {
                 <form onSubmit={form.handleSubmit(handleSubmitForm)}>
                     <div className="form__element">
                         <InputField
-                            name="password"
+                            name="currentPass"
                             type="password"
                             form={form}
                             placeholder="Mật khẩu cũ"
@@ -75,7 +73,7 @@ function EditPassword({ onClose }) {
                     </div>
                     <div className="form__element">
                         <InputField
-                            name="newPassword"
+                            name="newPass"
                             type="password"
                             form={form}
                             placeholder="Mật khẩu mới"
@@ -84,7 +82,7 @@ function EditPassword({ onClose }) {
                     </div>
                     <div className="form__element">
                         <InputField
-                            name="retypeNewPassword"
+                            name="reNewPass"
                             type="password"
                             form={form}
                             placeholder="Nhập lại mật khẩu mới"

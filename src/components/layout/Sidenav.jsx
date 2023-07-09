@@ -104,6 +104,32 @@ function Sidenav({ color }) {
       </div>
       <hr style={{margin: '8px'}}/>
       <Menu theme='light' mode='inline'>
+      <Menu.Item key='5'>
+          <NavLink to={path.revenueManagement}>
+            <span
+              className='icon'
+              style={{
+                background: page === 'tables' ? color : '',
+              }}
+            >
+              {tables}
+            </span>
+            <span className='label'>Statistical</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key='6'>
+          <NavLink to={path.timetableManage}>
+            <span
+              className='icon'
+              style={{
+                background: page === 'tables' ? color : '',
+              }}
+            >
+              {tables}
+            </span>
+            <span className='label'>Timetable</span>
+          </NavLink>
+        </Menu.Item>
         <Menu.Item key='7'>
           <NavLink to={path.scheduleManagement}>
             <span
@@ -128,6 +154,19 @@ function Sidenav({ color }) {
               {tables}
             </span>
             <span className='label'>Appointment</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key='9'>
+          <NavLink to={path.paymentManage}>
+            <span
+              className='icon'
+              style={{
+                background: page === 'tables' ? color : '',
+              }}
+            >
+              {tables}
+            </span>
+            <span className='label'>Payment</span>
           </NavLink>
         </Menu.Item>
         

@@ -14,14 +14,7 @@ function Register() {
     const [disableButton, setDisabledButton] = useState(false)
     const navigate = useNavigate()
     const schema = yup.object().shape({
-        phoneNumber: yup
-            .string()
-            .required('Vui lòng nhập số điện thoại')
-            .matches(phoneRegExp, 'Vui lòng nhập số điện thoại')
-            .min(10, 'Số điện thoại không hợp lệ')
-            .max(10, 'Số điện thoại không hợp lệ'),
-        firsname: yup.string().required('Vui lòng nhập họ'),
-        lastname: yup.string().required('Vui lòng nhập tên'),
+        fullName: yup.string().required('Vui lòng nhập họ và tên'),
         email: yup
             .string()
             .required('Vui lòng nhập Email')
@@ -31,47 +24,51 @@ function Register() {
             .required('Vui lòng nhập mật khẩu')
             .min(5, 'Mật khẩu 5 - 15 kí tự')
             .max(15, 'Mật khẩu 5 - 15 kí tự'),
-        birthday: yup.string().required('Vui lòng nhập ngày sinh'),
+        // birthday: yup.string().required('Vui lòng nhập ngày sinh'),
         passwordConfirm: yup
             .string()
             .required('Vui lòng nhập lại mật khẩu')
             .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
-        address: yup.string().required('Vui lòng nhập địa chỉ')
+        // phoneNumber: yup
+        //     .string()
+        //     .required('Vui lòng nhập số điện thoại')
+        //     .matches(phoneRegExp, 'Vui lòng nhập số điện thoại')
+        //     .min(10, 'Số điện thoại không hợp lệ')
+        //     .max(10, 'Số điện thoại không hợp lệ'),
+        // address: yup.string().required('Vui lòng nhập địa chỉ')
     })
     const form = useForm({
         defaultValues: {
-            phoneNumber: '',
             email: '',
-            firsname: '',
-            lastname: '',
-            gender: '0',
-            birthday: '',
+            fullName: '',
             password: '',
             passwordConfirm: '',
-            address: ''
+            // phoneNumber: '',
+            // gender: '0',
+            // birthday: '',
+            // address: ''
         },
         resolver: yupResolver(schema)
     })
     const handleSubmitForm = value => {
-        const valueSubmit = { ...value }
-        valueSubmit.gender = valueSubmit.gender === '1' ? 1 : 0
-        delete valueSubmit.passwordConfirm
-        const formData = new FormData()
-        for (let key in valueSubmit) {
-            formData.append(key, valueSubmit[key])
-        }
+        console.log(value);
+        const valueSubmit = {}
+        valueSubmit.email = value.email;
+        valueSubmit.password = value.password;
+        valueSubmit.fullName = value.fullName;
         (async () => {
             try {
                 setDisabledButton(true)
                 // eslint-disable-next-line no-unused-vars
-                const data = await authApi.signup(formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
+                const data = await authApi.signup(valueSubmit, {
+                    header: {'Content-Type': 'application/json'},
                 })
                 toast.success(
                     'Đăng ký thành công, mời bạn vào mail để xác nhận',
                     {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    }
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 5000
+                    },
                 )
                 navigate('/login')
             } catch (err) {
@@ -92,25 +89,14 @@ function Register() {
                     Đăng ký
                 </span>
                 <form onSubmit={form.handleSubmit(handleSubmitForm)}>
-                    <div className="authform__form-element-two-input">
-                        <div>
-                            <InputField
-                                label="Họ"
-                                name="firsname"
-                                type="input"
-                                form={form}
-                                placeholder="Họ"
-                            />
-                        </div>
-                        <div>
-                            <InputField
-                                label="Tên"
-                                name="lastname"
-                                type="input"
-                                form={form}
-                                placeholder="Tên"
-                            />
-                        </div>
+                    <div className="authform__form-element">
+                        <InputField
+                            label="Họ và tên"
+                            name="fullName"
+                            type="input"
+                            form={form}
+                            placeholder="Họ và tên"
+                        />
                     </div>
                     <div className="authform__form-element">
                         <InputField
@@ -121,7 +107,7 @@ function Register() {
                             placeholder="Email"
                         />
                     </div>
-                    <div className="authform__form-element">
+                    {/* <div className="authform__form-element">
                         <InputField
                             label="Số điện thoại"
                             name="phoneNumber"
@@ -158,7 +144,7 @@ function Register() {
                             placeholder="Địa chỉ"
                             type="input"
                         />
-                    </div>
+                    </div> */}
                     <div className="authform__form-element">
                         <InputField
                             label="Mật khẩu"
@@ -182,6 +168,7 @@ function Register() {
                             type="submit"
                             className="button-submit-login"
                             disabled={disableButton}
+                            // onClick={handleSubmitForm}
                         >
                             Đăng ký
                         </button>

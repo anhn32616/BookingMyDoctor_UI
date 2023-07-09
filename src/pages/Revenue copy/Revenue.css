@@ -1,0 +1,11 @@
+.account-info p {
+    font-size: 18px;
+    font-weight: 600;
+}
+.account-info ul {
+    list-style-type: initial;
+    margin-left: 50px;
+}
+.account-info li {
+    font-size: 15px;
+}

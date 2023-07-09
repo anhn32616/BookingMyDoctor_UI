@@ -31,14 +31,15 @@ export const update = createAsyncThunk(
         try {
             const data = await userApi.updateInfoUser(payload, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `${localStorage.getItem(
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + `${localStorage.getItem(
                         'access_token'
                     )}`
                 }
             })
-            localStorage.setItem('user', JSON.stringify(data.message))
-            return data.message
+            var res = await userApi.getMyProfile()
+            localStorage.setItem('user', JSON.stringify(res.data))
+            return res.data
         } catch (err) {
             return rejectWithValue(err)
         }

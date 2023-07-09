@@ -17,8 +17,10 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import doctorApi from 'api/doctorApi'
 import appointmentApi from 'api/appointmentApi'
-import userApi from 'api/userApi'
 import ModalAppointmentDetail from 'components/appointment/ModalAppointmentDetail'
+import RatingAppointment from 'components/appointment/RatingAppointment'
+import { addNotification } from 'utils/firebase/NotificationFb'
+import strftime from 'strftime'
 const { Option } = Select
 
 //styles
@@ -102,6 +104,8 @@ function AppointmentTablePatient() {
   const [selectedStatus, setSelectedStatus] = useState()
   const [dataDoctor, setDataDoctor] = useState([])
   const [visibleModalDetail, setVisibleModalDetail] = useState(false)
+  const [visibleModalRate, setVisibleModalRate] = useState(false)
+  const [appointmentRateId, setAppointmentRateId] = useState()
   const [apppointmentDetail, setAppointmentDetail] = useState()
   const [hiddenCancel, setHiddenCancel] = useState(false);
 
@@ -137,6 +141,9 @@ function AppointmentTablePatient() {
     getRecords()
     // eslint-disable-next-line
   }, [page, pageSize])
+  useEffect(() => {
+    document.title = 'Quản lý cuộc hẹn'
+  }, [])
 
   const onDelete = (id) => {
     Modal.confirm({
@@ -160,6 +167,10 @@ function AppointmentTablePatient() {
     })
   }
 
+  const onRate = (id) => {
+    setAppointmentRateId(id)
+    setVisibleModalRate(true)
+  }
   const onDetail = (appointment) => {
     setAppointmentDetail(appointment)
     setVisibleModalDetail(true)
@@ -213,7 +224,7 @@ function AppointmentTablePatient() {
                   (
                     <>
                       <Popconfirm title="Are you sure to cancel this appointment?"
-                        onConfirm={() => onCancel(item?.id)}>
+                        onConfirm={() => onCancel(item)}>
                         <Button type='primary' danger>
                           Cancel
                         </Button>
@@ -226,6 +237,14 @@ function AppointmentTablePatient() {
                     <>
                       <Button type="primary" danger onClick={() => { onDelete(item.id) }}>
                         Delete
+                      </Button>
+                    </>
+                  )}
+                {item.status === 'Done' &&
+                  (
+                    <>
+                      <Button style={{ width: 68, marginRight: 10 }} type="primary" onClick={() => { onRate(item.id) }}>
+                        Rate
                       </Button>
                     </>
                   )}
@@ -243,9 +262,9 @@ function AppointmentTablePatient() {
   }
 
   const optionHiddenCancel = () => (
-    <div className="filter-item" style={{marginRight: 20}}>
-      <div className="filter-item-label" style={{marginBottom: 17}}>HIDDEN CANCEL</div>
-      <Switch style={{position: 'relative', top: '-7px', width: 30}} checked={hiddenCancel} onChange={() => { setHiddenCancel(!hiddenCancel) }} />
+    <div className="filter-item" style={{ marginRight: 20 }}>
+      <div className="filter-item-label" style={{ marginBottom: 17 }}>HIDDEN CANCEL</div>
+      <Switch style={{ position: 'relative', top: '-7px', width: 30 }} checked={hiddenCancel} onChange={() => { setHiddenCancel(!hiddenCancel) }} />
     </div>
   )
 
@@ -272,12 +291,14 @@ function AppointmentTablePatient() {
     </div>
   )
 
-  const onCancel = async (id) => {
+  const onCancel = async (appointment) => {
     try {
-      var res = await appointmentApi.cancelAppontment(id);
+      var res = await appointmentApi.cancelAppontment(appointment.id);
       toast.success(res.message, {
         position: toast.POSITION.BOTTOM_RIGHT
       })
+      const message = `Bệnh nhân ${appointment.patient.fullName} đã hủy lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+      addNotification(appointment.schedule.userId, message)
       getRecords()
     } catch (error) {
       toast.error(error.message, {
@@ -376,7 +397,7 @@ function AppointmentTablePatient() {
                     pageSize: pageSize,
                     total: totalItem,
                     showSizeChanger: true,
-                    pageSizeOptions: ['10', '15', '30'],
+                    pageSizeOptions: ['5', '10', '15'],
                     onChange: (page, pageSize) => {
                       setPage(page)
                       setPageSize(pageSize)
@@ -390,6 +411,8 @@ function AppointmentTablePatient() {
         </Row>
         <ModalAppointmentDetail modalVisible={visibleModalDetail} setModalVisible={setVisibleModalDetail}
           appointment={apppointmentDetail} reloadListAppointment={getRecords} />
+        {appointmentRateId && <RatingAppointment modalVisible={visibleModalRate} setModalVisible={setVisibleModalRate}
+          appointmentId={appointmentRateId} reloadListAppointment={getRecords} />}
       </div >
     </>
   )

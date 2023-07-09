@@ -41,14 +41,18 @@ function BookTimeTable({ doctor }) {
         const valueSubmit = {
             date: new Date(strftime('%Y-%m-%d', date)).toISOString(),
             doctorId: doctorId,
-            status: 'Available'
         };
         (async () => {
             try {
-                const respone = await scheduleApi.getAllSchedule(
-                    { ...valueSubmit }
+                const respone1 = await scheduleApi.getAllSchedule(
+                    { ...valueSubmit, status: 'Available' }
                 )
-                setListTimeTable(respone.data.listItem.reverse())
+                const respone2 = await scheduleApi.getAllSchedule(
+                    { ...valueSubmit, status: 'Pending' }
+                )
+                let listSchedule = [...respone1.data.listItem, ...respone2.data.listItem];
+                listSchedule = listSchedule.sort((x,y) => new Date(x.startTime) - new Date(y.startTime))
+                setListTimeTable(listSchedule)
             } catch (err) {
                 toast.error(err.message, {
                     position: toast.POSITION.BOTTOM_RIGHT

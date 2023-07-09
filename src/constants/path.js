@@ -36,6 +36,9 @@ class Path {
         this.returnPayment = '/payment/return'
         this.dashBoard = '/system/dashboard'
         this.veirifyEmail = '/auth/verify-account'
+        this.paymentReturn = '/payment-return'
+        this.timetableManage = '/system/timetable-manage'
+        this.paymentManage = '/system/payment-manage'
     }
 }
 

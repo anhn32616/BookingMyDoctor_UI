@@ -7,21 +7,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from 'pages/Auth/userSlice'
 import { FiMenu } from 'react-icons/fi'
 import { useSystemAuthenticated } from 'hooks/useSystemAuthenticated'
-import { IoIosNotifications } from 'react-icons/io'
 import Notification from './components/Notification'
-import { AiFillMessage } from 'react-icons/ai'
 import useComponentVisible from 'hooks/useComponentVisible'
+import { Avatar, Badge } from 'antd'
+import { useNotifications } from 'utils/firebase/NotificationFb'
 function Header() {
     const isSystem = useSystemAuthenticated()
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const userData = useSelector(state => state.user.profile)
-    const notificationList = useSelector(
-        state => state.notification.notificationList
-    )
-    const notificationCount = notificationList.filter(
-        item => item.status === false
+    const notificationList = useNotifications()
+    const notificationCount = notificationList.filter( 
+        item => item.read === false
     ).length
     const [showDropdown, setShowDropdown] = useState(false)
     const toggleDropdownProfile = () => {
@@ -39,14 +37,14 @@ function Header() {
         setShowDropdown(false)
     }
     const handleSystem = () => {
-        navigate(path.system)
+        navigate(path.revenueManagement)
         setShowDropdown(false)
     }
     const handleAppoinment = () => {
         navigate(path.myAppointment)
         setShowDropdown(false)
     }
-    const handleToMessage = () => navigate(path.messageAppLayout)
+    const handleToMessage = () => window.location = path.messageAppLayout
 
     const { ref, isComponentVisible } = useComponentVisible(false)
     const { ref: refMenu, isComponentVisible: isComponentVisibleMenu } = useComponentVisible(false)
@@ -120,24 +118,23 @@ function Header() {
                 <div className="header__action">
                     {userData.id && (
                         <>
-                            <div className="header__action-notify" ref={ref}>
-                                <span className="header__action-notify-count">
-                                    {notificationCount}
-                                </span>
-                                <span onClick={toggleNotifications}>
-                                    <IoIosNotifications />
-                                </span>
+                            <div className='header__action-notify' ref={ref}>
+                                <Badge style={{ cursor: 'pointer', fontSize: 10 }} count={notificationCount} onClick={toggleNotifications}>
+                                    <Avatar style={{ cursor: 'pointer', background: '#F0F2F5' }} shape='circle' size='default' >
+                                        <i className="fa-solid fa-bell" style={{ cursor: 'pointer', fontSize: 18, color: '#192843' }}></i>
+                                    </Avatar>
+                                </Badge>
 
                                 {showNotification && isComponentVisible && (
                                     <div className="header__action-notify-area">
-                                        <Notification />
+                                        <Notification notificationList={notificationList}/>
                                     </div>
                                 )}
                             </div>
-                            <div className="header__action-message">
-                                <span onClick={handleToMessage}>
-                                    <AiFillMessage />
-                                </span>
+                            <div>
+                                <Avatar onClick={handleToMessage} style={{ cursor: 'pointer', background: '#F0F2F5' }} shape='circle' size='default' >
+                                    <i className="fa-solid fa-comment-dots" style={{ fontSize: 18, color: '#192843' }} />
+                                </Avatar>
                             </div>
                             <div className="header__profile" ref={refMenu}>
                                 <img
@@ -147,6 +144,12 @@ function Header() {
                                 />
                                 {showDropdown && isComponentVisibleMenu && (
                                     <ul className="header__profile-dropdown">
+                                        <li
+                                            className="header__profile-dropdown-item"
+                                            onClick={handleProfile}
+                                        >
+                                            Trang cá nhân
+                                        </li>
                                         {isSystem && (
                                             <li
                                                 className="header__profile-dropdown-item"
@@ -156,12 +159,7 @@ function Header() {
                                             </li>
                                         )}
 
-                                        <li
-                                            className="header__profile-dropdown-item"
-                                            onClick={handleProfile}
-                                        >
-                                            Trang cá nhân
-                                        </li>
+
                                         {!isSystem && (
                                             <li
                                                 className="header__profile-dropdown-item"

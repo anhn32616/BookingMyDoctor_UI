@@ -1,0 +1,18 @@
+.PatientComment {
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    & p {
+        margin: 0;
+    }
+    &__info {
+        display: flex;
+        justify-self: start;
+        align-items: center;
+        & span {
+            color: #45c3d2;
+        }
+        &-date{
+            margin-left: 10px;
+        }
+    }
+}

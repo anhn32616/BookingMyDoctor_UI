@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form'
 import InputField from 'components/InputFiled'
 import RadioGroup from 'components/RadioGroup'
 import * as yup from 'yup'
-// eslint-disable-next-line no-useless-escape
-const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
 import { yupResolver } from '@hookform/resolvers/yup'
 import './index.scss'
 import PreviewUploadImg from 'components/PreviewUploadImg'
@@ -16,6 +14,8 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { path } from 'constants/path'
 import doctorApi from 'api/doctorApi'
+// eslint-disable-next-line no-useless-escape
+const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
 AddDoctor.propTypes = {}
 
 function AddDoctor() {

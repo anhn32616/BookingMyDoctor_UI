@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fullcalendar/daygrid": "^6.1.8",
@@ -16,9 +17,12 @@
     "antd": "^4.16.6",
     "axios": "^0.27.2",
     "chart.js": "^4.0.1",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.8",
+    "firebase": "^9.22.2",
     "moment": "^2.29.4",
     "node-sass": "^8.0.0",
+    "numeral": "^2.0.6",
     "query-string": "^7.1.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.0.1",
@@ -37,6 +41,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.5.3",
     "strftime": "^0.10.1",
+    "styled-components": "^6.0.0-rc.3",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -45,6 +50,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [

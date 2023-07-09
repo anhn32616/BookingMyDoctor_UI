@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './index.scss'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import InputField from 'components/InputFiled'
 import { FaUser } from 'react-icons/fa'
 import RadioGroup from 'components/RadioGroup'
@@ -20,6 +20,12 @@ import Loading from 'components/Loading'
 import appointmentApi from 'api/appointmentApi'
 import { toast } from 'react-toastify'
 import { path } from 'constants/path'
+import { addNotification } from 'utils/firebase/NotificationFb'
+import listAdress from "../../assets/address.json";
+import userApi from 'api/userApi'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { update } from 'pages/Auth/userSlice'
+
 
 function BookAppointment() {
     const navigate = useNavigate()
@@ -27,6 +33,13 @@ function BookAppointment() {
     const idSchedule = useParams().id
     const [scheduleDetail, setScheduleDetail] = useState({})
     const [doctorDetail, setDoctorDetail] = useState({})
+    const [citySelected, setCitySelected] = useState();
+    const [districtSelected, setDistrictSelected] = useState();
+    const [wardSelected, setWardSelected] = useState();
+    let isGetDataForEdit = true;
+    const dispatch = useDispatch()
+
+
     const getDoctorDetail = async id => {
         try {
             const respone = await doctorApi.getDetailDoctor(id)
@@ -52,18 +65,56 @@ function BookAppointment() {
     const userData = useSelector(state => state.user.profile)
     const form = useForm({
         defaultValues: {
-            phoneNumber: userData.phoneNumber,
-            email: userData.email,
-            fullname: userData.fullName,
-            gender: userData.gender === true ? '1' : '0',
-            birthday: userData.birthDay.split('T')[0],
-            address: [userData.address, userData.ward, userData.district, userData.city].join(', '),
+            phoneNumber: userData?.phoneNumber,
+            email: userData?.email,
+            fullname: userData?.fullName,
+            gender: userData?.gender === true ? 'true' : 'false',
+            birthday: userData?.birthDay?.split('T')[0],
             symptoms: '',
-            user_id: userData.id,
+            user_id: userData?.id,
             scheduleId: idSchedule
         }
     })
-    const handleSubmit = value => {
+    useEffect(() => {
+        isGetDataForEdit = true;
+        form.setValue('phoneNumber', userData?.phoneNumber)
+        form.setValue('email', userData?.email)
+        form.setValue('image', userData?.image)
+        form.setValue('fullName', userData?.fullName)
+        form.setValue('gender', userData?.gender == true ? 'true' : 'false')
+        form.setValue('birthDay', userData?.birthDay?.split('T')[0])
+        form.setValue('address', userData?.address)
+        form.setValue('city', userData?.city)
+        form.setValue('district', userData?.district)
+        form.setValue('ward', userData?.ward)
+        const city = listAdress.find(city => city.name === userData?.city);
+        const district = city?.districts.find(d => d.name === userData?.district);
+        setCitySelected(city);
+        setDistrictSelected(district);
+        setWardSelected(userData?.ward);
+    }, [userData, form])
+
+    useEffect(() => {
+        if (!isGetDataForEdit) {
+            setDistrictSelected(null);
+            form.setFieldsValue({ "district": null })
+        }
+        // eslint-disable-next-line
+    }, [citySelected])
+
+    useEffect(() => {
+        if (isGetDataForEdit) {
+            isGetDataForEdit = false;
+        } else {
+            setWardSelected(null);
+            form.setFieldsValue({ "ward": null })
+        }
+        // eslint-disable-next-line
+    }, [districtSelected])
+
+    const handleSubmit = async (value) => {
+        updateInfo(value)
+
         const valueSubmit = {
             scheduleId: Number(value.scheduleId),
             symptoms: value.symptoms
@@ -76,14 +127,56 @@ function BookAppointment() {
                 toast.success('Tạo cuộc hẹn thành công', {
                     position: toast.POSITION.BOTTOM_RIGHT
                 })
+                const message = `Bệnh nhân ${userData.fullName} đã đặt lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(scheduleDetail.startTime))}`
+                addNotification(doctorDetail.user.id, message)
                 navigate(path.myAppointment)
             } catch (err) {
-                toast.error(err.message, {
-                    position: toast.POSITION.BOTTOM_RIGHT
-                })
+                if (err.message)
+                    toast.error(err.message, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 4000
+                    });
+                else
+                    toast.error("Chỉ tài khoản bệnh nhân mới đặt được lịch", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 4000
+                    })
             }
         })()
+
     }
+
+    const updateInfo = async (value) => {
+        value.gender = value.gender === 'true' ? true : false;
+        if (value.phoneNumber !== userData?.phoneNumber
+            || value.fullName !== userData?.fullName
+            || value.gender !== userData?.gender
+            || value.address !== userData?.address
+            || value.birthDay !== userData?.birthDay
+            || value.city !== userData?.city
+            || value.district !== userData?.district
+            || value.ward !== userData?.ward) {
+            const valueUpdateInfo = {
+                'phoneNumber': value.phoneNumber,
+                'fullName': value.fullName,
+                'gender': value.gender,
+                'address': value.address,
+                'birthDay': value.birthDay,
+                'city': value.city,
+                'district': value.district,
+                'ward': value.ward,
+                'image': userData?.image
+            }
+            console.log('updateInfo', valueUpdateInfo);
+            try {
+                const datares = await dispatch(update(valueUpdateInfo))
+                unwrapResult(datares)
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    }
+
     useEffect(() => {
         document.title = 'Đặt lịch khám'
     }, [])
@@ -144,8 +237,8 @@ function BookAppointment() {
                             disabled={false}
                             mode="gender"
                             optionData={[
-                                { label: 'Nam', value: Number(1) },
-                                { label: 'Nữ', value: Number(0) }
+                                { label: 'Nam', value: true },
+                                { label: 'Nữ', value: false }
                             ]}
                         />
                     </div>
@@ -161,7 +254,7 @@ function BookAppointment() {
                     </div>
                     <div className="form__element">
                         <InputField
-                            name="birthday"
+                            name="birthDay"
                             type="date"
                             form={form}
                             placeholder="Ngày sinh"
@@ -180,15 +273,50 @@ function BookAppointment() {
                         />
                     </div>
                     <div className="form__element">
+                        <div className="select-group">
+                            <header className="select-group__title">Tỉnh/Thành phố</header>
+                            <select {...form.register('city')} onChange={(e) => setCitySelected(listAdress.find(a => a.name === e.target.value))}>
+                                {listAdress.map(item => (
+                                    <option value={item.name} key={item.code} selected={form.getValues('city') == item.name} >
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    {citySelected && (<div className="form__element">
+                        <div className="select-group">
+                            <header className="select-group__title">Quận/Huyện</header>
+                            <select {...form.register('district')} onChange={(e) => setDistrictSelected(citySelected.districts.find(a => a.name === e.target.value))}>
+                                {citySelected.districts?.map((item) => (
+                                    <option value={item.name} key={item.code} selected={form.getValues('districts') == item.name} >
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>)}
+                    {districtSelected && (<div className="form__element">
+                        <div className="select-group">
+                            <header className="select-group__title">Xã/Phường</header>
+                            <select {...form.register('ward')} onChange={(e) => setWardSelected(e.target.value)}>
+                                {districtSelected.wards?.map((item) => (
+                                    <option value={item.name} key={item.code} selected={form.getValues('ward') == item.name} >
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>)}
+                    {wardSelected && <div className="form__element">
                         <InputField
                             name="address"
                             type="input"
                             form={form}
-                            placeholder="Địa chỉ"
-                            disabled={false}
+                            placeholder="Địa chỉ cụ thể"
                             icon={<MdLocationPin />}
                         />
-                    </div>
+                    </div>}
                     <div className="form__element">
                         <InputField
                             name="symptoms"

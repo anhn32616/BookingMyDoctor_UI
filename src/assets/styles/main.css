@@ -410,9 +410,10 @@ body {
 }
 .layout-dashboard .header-control {
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
+  justify-content: flex-end;
   margin-top: 10px;
+  gap: 10px
 }
 
 .ant-dropdown-menu.ant-dropdown-menu-split.header-notifications-dropdown {
@@ -782,7 +783,7 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
   margin-top: 15px;
 }
 .ant-layout {
-  background: #fafafa;
+  background: #c9dadf9e;
 }
 .pageheader {
   display: flex;

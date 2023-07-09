@@ -1,15 +1,13 @@
 import React from 'react'
-import { AiFillStar } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import './index.scss'
 import { Rate } from 'antd'
 DoctorProfile.propTypes = {}
 
 function DoctorProfile({ doctor }) {
-    const arr = [1, 2, 3, 4, 5]
     const navigate = useNavigate()
     const handleMessage = () => {
-        navigate(`/messageApp/${doctor.user_id}`)
+        navigate(`/messageApp/${doctor.user.id}`)
     }
     return (
         <div className="doctorProfile">
@@ -42,23 +40,6 @@ function DoctorProfile({ doctor }) {
                     <span className="doctorProfile__rate-count">
                         {doctor.numberOfReviews ? (<>{doctor.numberOfReviews} đánh giá</>) : (<>0 đánh giá</>)}
                     </span>
-                    <div className="doctorProfile__rate-list">
-                        {doctor.rate > 0 && arr.map(item => {
-                            if (item <= Math.floor(doctor.rate)) {
-                                return (
-                                    <span key={item}>
-                                        <AiFillStar className="star icon__active" />
-                                    </span>
-                                )
-                            }
-                            return (
-                                <span key={item}>
-                                    <AiFillStar className="star" />
-                                </span>
-                            )
-                        })}
-                    </div>
-
                 </div>
             </div>
         </div>

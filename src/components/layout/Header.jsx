@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Row,
   Col,
@@ -11,10 +11,15 @@ import {
 } from 'antd';
 
 
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import avtar from 'assets/img/team-2.jpg';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'pages/Auth/userSlice';
+import { useSystemAuthenticated } from 'hooks/useSystemAuthenticated';
+import { useNotifications } from 'utils/firebase/NotificationFb';
+import { path } from 'constants/path';
+import useComponentVisible from 'hooks/useComponentVisible';
+import Notification from 'components/Header/components/Notification';
 
 
 const bell = [
@@ -177,10 +182,49 @@ function Header({
   name,
   onPress,
 }) {
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    dispatch(logout());
+
+  const isSystem = useSystemAuthenticated()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const userData = useSelector(state => state.user.profile)
+  const notificationList = useNotifications()
+  const notificationCount = notificationList.filter(
+    item => item.read === false
+  ).length
+  const [showDropdown, setShowDropdown] = useState(false)
+  const toggleDropdownProfile = () => {
+    setShowDropdown(!showDropdown)
   }
+  const [showNotification, setShowNotification] = useState(false)
+  const toggleNotifications = () =>
+    setShowNotification(!showNotification)
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/login')
+  }
+  const handleProfile = () => {
+    navigate(path.profile)
+    setShowDropdown(false)
+  }
+  const handleToMessage = () => navigate(path.messageApp)
+  const handleSystem = () => {
+    navigate(path.revenueManagement)
+    setShowDropdown(false)
+  }
+  const handleAppoinment = () => {
+    navigate(path.myAppointment)
+    setShowDropdown(false)
+  }
+  const { ref, isComponentVisible } = useComponentVisible(false)
+  const { ref: refMenu, isComponentVisible: isComponentVisibleMenu } = useComponentVisible(false)
+  useEffect(() => {
+      if (isComponentVisible) setShowNotification(true)
+      else setShowNotification(false)
+  }, [isComponentVisible])
+  useEffect(() => {
+      if (isComponentVisibleMenu) setShowDropdown(true)
+      else setShowDropdown(false)
+  }, [isComponentVisibleMenu])
 
   return (
     <>
@@ -196,18 +240,6 @@ function Header({
           </Breadcrumb>
         </Col>
         <Col span={24} md={18} className='header-control'>
-          <Badge size='small' count={4}>
-            <Dropdown overlay={menu} trigger={['click']}>
-              <a
-                href='#pablo'
-                className='ant-dropdown-link'
-                onClick={(e) => e.preventDefault()}
-              >
-                {bell}
-              </a>
-            </Dropdown>
-          </Badge>
-
           <Button
             type='link'
             className='sidebar-toggler'
@@ -215,10 +247,70 @@ function Header({
           >
             {toggler}
           </Button>
+          <>
+            <div className='header__action-notify' ref={ref}>
+              <Badge style={{ cursor: 'pointer', fontSize: 10 }} count={notificationCount} onClick={toggleNotifications}>
+                <Avatar style={{ cursor: 'pointer', background: '#F0F2F5' }} shape='circle' size='default' >
+                  <i className="fa-solid fa-bell" style={{ cursor: 'pointer', fontSize: 18, color: '#192843' }}></i>
+                </Avatar>
+              </Badge>
 
-          <Link to='/login' onClick={handleLogout} className='btn-sign-in'>
-            <span>Logout</span>
-          </Link>
+              {showNotification && isComponentVisible && (
+                <div className="header__action-notify-area">
+                  <Notification notificationList={notificationList} />
+                </div>
+              )}
+            </div>
+            <div>
+              <Avatar onClick={handleToMessage} style={{ cursor: 'pointer', background: '#F0F2F5' }} shape='circle' size='default' >
+                <i className="fa-solid fa-comment-dots" style={{ fontSize: 18, color: '#192843' }} />
+              </Avatar>
+            </div>
+            <div className="header__profile" ref={refMenu}>
+              <img
+                className="header__profile-img"
+                src={userData.image}
+                onClick={toggleDropdownProfile}
+              />
+              {showDropdown && isComponentVisibleMenu && (
+                <ul className="header__profile-dropdown">
+                  <li
+                    className="header__profile-dropdown-item"
+                    onClick={handleProfile}
+                  >
+                    Trang cá nhân
+                  </li>
+                  {isSystem && (
+                    <li
+                      className="header__profile-dropdown-item"
+                      onClick={handleSystem}
+                    >
+                      Quản lí
+                    </li>
+                  )}
+
+
+                  {!isSystem && (
+                    <li
+                      className="header__profile-dropdown-item"
+                      onClick={
+                        handleAppoinment
+                      }
+                    >
+                      Quản lí cuộc hẹn
+                    </li>
+                  )}
+
+                  <li
+                    className="header__profile-dropdown-item"
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </li>
+                </ul>
+              )}
+            </div>
+          </>
 
         </Col>
       </Row>

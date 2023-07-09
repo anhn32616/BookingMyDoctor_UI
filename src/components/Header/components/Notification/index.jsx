@@ -2,8 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import NotificationItem from '../NotificationItem'
 import './index.scss'
-function Notification() {
-    const notificationList = useSelector(state => state.notification.notificationList)
+function Notification({notificationList}) {
     return (
         <div className="notification">
             <div className="notification__container">

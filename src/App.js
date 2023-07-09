@@ -4,14 +4,11 @@ import 'antd/dist/antd.min.css'
 import 'assets/styles/main.css'
 import 'assets/styles/responsive.css'
 import 'assets/styles/public.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { createContext, React } from 'react'
 import { ToastContainer } from 'react-toastify'
 import RoutesComponent from './routes'
 
-// import { useDispatch, useSelector } from 'react-redux'
-// import { getNotifies } from 'components/Header/components/Notification/notificationSlice'
-// import { io } from 'socket.io-client'
-// import SocketClient from 'SocketClient'
 import 'react-loading-skeleton/dist/skeleton.css'
 export const SocketContext = createContext()
 function App() {

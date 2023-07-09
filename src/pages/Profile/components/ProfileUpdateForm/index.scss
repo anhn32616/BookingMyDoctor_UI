@@ -1,5 +1,21 @@
 @import '_setting.scss';
+.select-group {
+    &__title {
+        display: block;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    select {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px 4px;
+        border: 2px solid #11111133;
+        border-radius: 4px;
+    }
+}
 .profileUpdateForm {
+    overflow-y: auto;
     position: fixed;
     top: 0;
     width: 100%;
@@ -11,11 +27,12 @@
     align-items: center;
     &__container {
         width: 500px;
-        height: 680px;
         background-color: white;
         border: 1px solid #ccc;
         border-radius: 4px;
         padding: 20px;
+        position: absolute;
+        top: 20px;
         h1 {
             color: $primary-color;
             text-align: center;

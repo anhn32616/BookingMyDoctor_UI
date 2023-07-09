@@ -1,12 +1,18 @@
 import { Button, Col, Modal, Row } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CardAppointment from './CardAppointment';
 
 function ModalSelectAppointment({ listAppointment, setModalVisible, modalVisible, reloadData }) {
-    const handleAccept = () => {
-        setModalVisible(false)
+    const [count, setCount] = useState(listAppointment.length);
+    useEffect(() => {
+        setCount(listAppointment.length)
+    },[listAppointment.length])
+
+    useEffect(() => {
+        if(count === 0) setModalVisible(false);
         reloadData()
-    }
+    }, [count])
+
     return (
         <Modal
             title="Appointments of schedule"
@@ -19,9 +25,9 @@ function ModalSelectAppointment({ listAppointment, setModalVisible, modalVisible
             <Row gutter={[12, 12]}>
                 {listAppointment && listAppointment.length > 1 ? listAppointment.map((item, index) => (
                     <Col key={index} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <CardAppointment appointment={item}  reloadData={handleAccept} />
+                        <CardAppointment appointment={item} setCount={setCount} />
                     </Col>
-                )) : (<><CardAppointment appointment={listAppointment[0]} reloadData={handleAccept} /></>)}
+                )) : (<><CardAppointment appointment={listAppointment[0]} setCount={setCount} /></>)}
             </Row>
         </Modal>
     );

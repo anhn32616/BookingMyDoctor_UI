@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import userApi from 'api/userApi'
 import { toast } from 'react-toastify'
+import authApi from 'api/authApi'
 
 function ForgotPassWordForm() {
     const schema = yup.object().shape({
@@ -23,16 +24,16 @@ function ForgotPassWordForm() {
     const handleSubmitForm = value => {
         (async () => {
             try {
-                await userApi.resetPassword(value)
-                toast.success('Reset mật khẩu thành công, mời vào mail xem mật khẩu', {
+                await authApi.forgotPass(value.email)
+                toast.success('Mật khẩu mới đã được tạo, mời vào mail xem mật khẩu', {
                     position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 1000
+                    autoClose: 5000
                 })
             }
             catch (err) {
                 toast.error(err.message, {
                     position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 1000
+                    autoClose: 5000
                 })
             }
         })()

@@ -66,37 +66,11 @@
         gap: 10px;
         &-notify, &-message {
             position: relative;
-            span {
-                display: block;
-                cursor: pointer;
-                background-color: #F0F2F5;
-                padding: 4px 6px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                font-size: 22px;
-                &:hover {
-                    opacity: 0.5;
-                }
-            }
-            &-count {
-                position: absolute;
-                right: -5px;
-                top: -10px;
-                color: white;
-                padding: 2px 4px !important;
-                font-size: 14px !important;
-                font-weight: 500;
-                background-color: red !important;
-                z-index: 10;
-                width: 20px;
-                height: 20px;
-            }
             &-area {
                 position: absolute;
                 top: 36px;
-                left: -20px;
+                right: -20px;
+                z-index: 99;
             }
         }
         &-auth {
@@ -142,6 +116,9 @@
         &-dropdown {
             width: 200px;
             position: absolute;
+            top: 35px;
+            right: -10px;
+            z-index: 99;
             padding: 10px 0;
             border-radius: 4px;
             border: 1px solid #ccc;
@@ -164,7 +141,6 @@
 @media only screen and (min-width: 768px) and (max-width: 1200px){
     .header {
         padding: 4px $margin-tablet;
-        font-size: 80%;
     }
     .header__action-notify-area {
         left: -16vw !important;

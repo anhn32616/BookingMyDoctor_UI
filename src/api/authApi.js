@@ -5,10 +5,13 @@ const authApi = {
         return http.post('/auth/login', data)
     },
     signup(data, config) {
-        return http.post('/auth/singup', data, config)
+        return http.post('/auth/register', data, config)
     },
     verifyAccount(token) {
-        return http.get(`/auth/verify-account?token=${token}`)
+        return http.get(`/auth/verified?token=${token}`)
+    },
+    forgotPass(data) {
+        return http.post(`/auth/forgot`, data)
     }
 }
 export default authApi

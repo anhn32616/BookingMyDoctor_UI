@@ -1,11 +1,14 @@
 import { Button, Modal, Rate, Tag } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ModalAppointmentDetail.css'
 import PatientInfo from 'components/patient/PatientInfo';
 import { Link } from 'react-router-dom';
 import appointmentApi from 'api/appointmentApi';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { addNotification } from 'utils/firebase/NotificationFb';
+import strftime from 'strftime';
+import rateApi from 'api/rateApi';
 
 const colorStatus = (status) => {
     switch (status) {
@@ -36,6 +39,23 @@ function convertDateTime(dateTimeStr) {
 
 function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, reloadListAppointment }) {
     const role = useSelector(state => state.user.profile.roleName)
+    const [rate, setRate] = useState();
+
+    useEffect(() => {
+        const getRateOfAppointment = async () => {
+            if (appointment?.status === "Done") {
+                try {
+                    var res = await rateApi.getRateByAppointmentId(appointment.id)
+                    if (res?.data) setRate(res.data.point); else setRate(null)
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+        }
+        getRateOfAppointment();
+    }, [appointment])
+
+
     const handleCancelAppointment = () => {
         Modal.confirm({
             title: 'Are you sure you want to cancel?',
@@ -47,6 +67,14 @@ function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, re
                     toast.success(response.message, {
                         position: toast.POSITION.BOTTOM_RIGHT
                     })
+                    if (role === "ROLE_PATIENT") {
+                        const action = appointment.status === 'PENDING' ? 'từ chối' : 'hủy'
+                        const message = `Bác sĩ ${appointment.schedule.doctorName} đã ${action} lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+                        addNotification(appointment.patientId, message)
+                    } else if (role === 'ROLE_DOCTOR') {
+                        const message = `Bệnh nhân ${appointment.patient.fullName} đã hủy lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+                        addNotification(appointment.schedule.userId, message)
+                    }
                     setModalVisible(false)
                     reloadListAppointment()
                 }).catch(err => {
@@ -68,6 +96,10 @@ function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, re
                     toast.success(response.message, {
                         position: toast.POSITION.BOTTOM_RIGHT
                     })
+                    const message1 = `Bác sĩ ${appointment.schedule.doctorName} đã báo cáo bệnh nhân ${appointment.patient.fullName} không đến khám ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+                    const message2 = `Bác sĩ ${appointment.schedule.doctorName} đã báo cáo bạn không đến khám ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+                    addNotification('admin', message1)
+                    addNotification(appointment.patientId, message2)
                     setModalVisible(false)
                     reloadListAppointment()
                 }).catch(err => {
@@ -78,6 +110,31 @@ function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, re
             }
         });
     }
+    const handleAcceptAppointment = () => {
+        Modal.confirm({
+            title: 'Are you sure you want to accept?',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk: () => {
+                appointmentApi.doctorAcceptAppointment(appointment.id).then((res) => {
+                    toast.success(res.message, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    })
+                    setModalVisible(false)
+                    const message = `Bác sĩ ${appointment.schedule.doctorName} đã xác nhận lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M', new Date(appointment.date))}`
+                    addNotification(appointment.patientId, message)
+                    res.data && res.data.forEach((notification) => addNotification(notification.userId, notification.message))
+                    reloadListAppointment()
+                }).catch(err => {
+                    toast.error(err.message, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    })
+                });
+            }
+        });
+    }
+
     return (
         <Modal
             title='Appointment details'
@@ -91,6 +148,14 @@ function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, re
             }}
         >
             <div className='appointment-info'>
+                {
+                    rate && (
+                        <p>
+                            <span className='info-label'>Rate: </span>
+                            <Rate disabled value={rate} />
+                        </p>
+                    )
+                }
                 <p>
                     <span className='info-label'>ID:</span> {appointment?.id}
                 </p>
@@ -121,22 +186,33 @@ function ModalAppointmentDetail({ appointment, setModalVisible, modalVisible, re
                         {appointment?.schedule?.doctorName}
                     </Link>
                 </p>
-                {(appointment?.status === 'Pending' || appointment?.status === 'Confirm') &&
-                    (
-                        <div style={{ textAlign: 'center' }}>
-                            <Button type='primary' danger onClick={handleCancelAppointment}>
-                                Cancel
-                            </Button>
-                        </div>
-                    )}
-                {(appointment?.status === 'Done' && role === 'ROLE_DOCTOR') &&
-                    (
-                        <div style={{ textAlign: 'center' }}>
-                            <Button type='primary' danger onClick={handleReportAppointment}>
-                                Report
-                            </Button>
-                        </div>
-                    )}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {(appointment?.status === 'Pending' || appointment?.status === 'Confirm') &&
+                        (
+                            <div style={{ textAlign: 'center' }}>
+                                <Button type='primary' danger onClick={handleCancelAppointment}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        )}
+                    {(appointment?.status === 'Pending' && role === 'ROLE_DOCTOR') &&
+                        (
+                            <div style={{ textAlign: 'center', marginLeft: 5 }}>
+                                <Button type='primary' onClick={handleAcceptAppointment}>
+                                    Accept
+                                </Button>
+                            </div>
+                        )}
+                    {(appointment?.status === 'Done' && role === 'ROLE_DOCTOR') &&
+                        (
+                            <div style={{ textAlign: 'center' }}>
+                                <Button type='primary' danger onClick={handleReportAppointment}>
+                                    Report
+                                </Button>
+                            </div>
+                        )}
+                </div>
+
             </div>
         </Modal>
 

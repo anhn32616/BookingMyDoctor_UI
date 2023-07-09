@@ -5,7 +5,9 @@ import Footer from 'components/Footer'
 import './index.scss'
 import images from 'assets'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { BsChatSquareDots } from 'react-icons/bs'
+import BoxChat from 'components/chat/BoxChat'
+import { useSelector } from 'react-redux'
+
 MainLayout.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.element,
@@ -15,6 +17,7 @@ MainLayout.propTypes = {
 
 function MainLayout() {
     const navigate = useNavigate()
+  const currentUser = useSelector(states => states.user.profile)
     return (
         <>
             <Header />
@@ -37,9 +40,7 @@ function MainLayout() {
                     </div>
                 </div>
             </div>
-            <div className="mainlayout-content--iconMess">
-                <span onClick={() => navigate(`/messageApp/${2}`)}><BsChatSquareDots /></span>
-            </div>
+            {currentUser && <BoxChat/>}
             <Footer />
         </>
     )

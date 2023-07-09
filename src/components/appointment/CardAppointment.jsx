@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import PatientInfo from '../patient/PatientInfo';
 import appointmentApi from 'api/appointmentApi';
 import { toast } from 'react-toastify';
+import { addNotification } from 'utils/firebase/NotificationFb';
+import strftime from 'strftime';
 
 
 
-function CardAppointment({ appointment, handleAction}) {
+function CardAppointment({ appointment, setCount}) {
     const [showOption, setShowOption] = useState(true);
     const handleCancelAppointment = async () => {
         try {
@@ -14,8 +16,11 @@ function CardAppointment({ appointment, handleAction}) {
             toast.success(res.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
+            const action = appointment.status === 'PENDING' ? 'từ chối' : 'hủy'
+            const message = `Bác sĩ ${appointment.schedule.doctorName} đã ${action} lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M',new Date(appointment.date))}`
+            addNotification(appointment.patientId, message)
             setShowOption(false);
-            reloadData()
+            setCount((pre) => pre-1)
         } catch (error) {
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
@@ -28,8 +33,12 @@ function CardAppointment({ appointment, handleAction}) {
             toast.success(res.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
-            reloadData()
+            setCount(0)
+            const message = `Bác sĩ ${appointment.schedule.doctorName} đã xác nhận lịch hẹn ngày ${strftime('%d/%m/%Y %Hh%M',new Date(appointment.date))}`
+            addNotification(appointment.patientId, message)
+            res.data && res.data.forEach((notification) => addNotification(notification.userId, notification.message))
         } catch (error) {
+            console.log(error);
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })

@@ -21,6 +21,9 @@ const appointmentApi = {
     },
     doctorReportAppointment(id, config) {
         return http.put(`/appointment/doctor-report/${id}`, { id: id }, config)
+    },
+    patientRateAppointment(id, data) {
+        return http.post(`/appointment/rate/${id}`, data)
     }
 }
 export default appointmentApi
